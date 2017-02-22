@@ -1,7 +1,7 @@
 #!/bin/bash
 # This scrip is to backup MongoDB which store metadata of graylog server
 # by Dara Som
-#
+# som2dara@gmail.com
 DATE=`/bin/date`
 LOG=/var/log/mongobackup.log
 MONGO_USER=grayloguser
