@@ -1,7 +1,12 @@
 #!/bin/bash
-# This scrip is to backup MongoDB which store metadata of graylog server
+# This scrip is to backup MongoDB which store metadata of graylog server 
+# It store only 15 days files when you define it in crontab
 # by Dara Som
 # som2dara@gmail.com
+# Add this to crontjob to run everyday at 3AM 
+# crotab -
+# 00 03 * * * /opt/scripts/mongodb_backup.sh
+# 
 DATE=`/bin/date`
 LOG=/var/log/mongobackup.log
 MONGO_USER=grayloguser
@@ -16,6 +21,7 @@ BACKUPS_DIR="/opt/mongodb-backup/"
 BACKUP_NAME="$APP_NAME-$TIMESTAMP"
 echo "===============================================================" >> $LOG
 echo "Starting backup:" $DATE >> $LOG
+mkdir -p /opt/mongodb-backup/
 # mongo admin --eval "printjson(db.fsyncLock())"
 # $MONGODUMP_PATH -h $MONGO_HOST:$MONGO_PORT -d $MONGO_DATABASE
 $MONGODUMP_PATH --db $MONGO_DATABASE --username $MONGO_USER --password $MONGO_PASS --out $BACKUPS_DIR
@@ -25,7 +31,7 @@ cd $BACKUPS_DIR
 mv $MONGO_DATABASE $BACKUP_NAME
 tar -zcvf $BACKUPS_DIR/$BACKUP_NAME.tar.gz $BACKUP_NAME
 rm -rf $BACKUP_NAME
-echo "===================== Finnish Backup =========================================="
+echo "===================== Finnish Backup ==========================="
 #echo "FINISH BACKUPS:" $DATE >> $LOG
 ## Chekcing file to delete
 echo "Files before to delete:" >> $LOG
